@@ -27,7 +27,8 @@ function promptUser(){
                 "Add employee",
                 "View departments",
                 "View roles",
-                "View employees"
+                "View employees",
+                "Exit"
             ],
             name: "action"
     }]).then(answer => {
@@ -44,6 +45,8 @@ function promptUser(){
                 return viewRoles();
             case "View employees":
                 return viewEmployees();
+            case "Exit":
+                return connection.end();
         };
     });
 };
@@ -57,7 +60,10 @@ function addDepartment(){
         }
     ]).then(answer => {
         console.log(answer.departmentType);
-        connection.end();
+        connection.query(`INSERT INTO departments(name) VALUES ("${answer.departmentType}")`, (err, res) => {
+            if (err) throw err;
+        });
+        viewDepartments();
     })
 }
 
