@@ -6,17 +6,17 @@ const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "OzzyIronMan!",
-    database: "employee_DB_"
+    password: "",
+    database: "employee_DB"
 });
 
 connection.connect((err) => {
     if (err) throw err;
     console.log(`Connected as ${connection.threadId}`);
-    promptUser();
+    mainMenu();
 });
 
-function promptUser(){
+function mainMenu(){
     inquirer.prompt([
         {
             type: "list",
@@ -63,7 +63,7 @@ function viewDepartments(){
         console.log("\n");
         console.table(res);
         console.log("\n");
-        promptUser();
+        mainMenu();
     });
 };
 
@@ -73,7 +73,7 @@ function viewEmployees(){
         console.log("\n");
         console.table(result);
         console.log("\n");
-        promptUser();
+        mainMenu();
     });
 };
 
@@ -83,7 +83,7 @@ function viewRoles(){
         console.log("\n");
         console.table(result);
         console.log("\n");
-        promptUser();
+        mainMenu();
     });
 };
 
@@ -100,7 +100,7 @@ function addDepartment(){
             if (err) throw err;
         });
         console.log("\n");
-        promptUser();
+        mainMenu();
     });
 };
 
@@ -141,7 +141,7 @@ function addRole(){
                     if (err) throw err;
                 });
                 console.log("\n");
-                promptUser();
+                mainMenu();
         });
     })
 };
@@ -181,7 +181,7 @@ function addManagerEmployee(){
             }
             connection.query("INSERT INTO employees (first_name, last_name, role_fk) VALUES (?, ?, ?)", [answers.firstName, answers.lastName, roleID], (err, result) => {
                 if (err) throw err;
-                promptUser();
+                mainMenu();
             })
         })
     })
@@ -253,7 +253,7 @@ function addNonManagerEmployee(){
 
             connection.query("INSERT INTO employees (first_name, last_name, role_fk, manager_id) VALUES (?, ?, ?, ?)", [answers.firstName, answers.lastName, roleID, managerID], (err, result) => {
                 if (err) throw err;
-                promptUser();
+                mainMenu();
             })
         })
     })
@@ -303,7 +303,7 @@ function updateEmployeeRole(){
             }
             connection.query("UPDATE employees SET role_fk = ? WHERE first_name = ? AND last_name = ?", [newRoleID, firstName, lastName], (err, result) => {
                 if (err) throw err;
-                promptUser();
+                mainMenu();
             })
         })
     })
